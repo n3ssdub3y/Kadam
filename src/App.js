@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+// import React from 'react';
+import { db } from './firebaseConfig';
+import { collection, getDocs } from 'firebase/firestore';
+import './App.css';
 import FilterPanel from './components/FilterPanel';
 import NGOList from './components/NGOList';
-import './App.css';
+
+
 
 
 function App() {
   const [filters, setFilters] = useState({ workType: '', locality: '', efficiency: '' });
+  const [ngoData, setNgoData] = useState([]);
 
-  const ngoData = [
-    { name: 'Helping Hands', workType: 'Education', locality: 'Delhi', efficiency: 9 },
-    { name: 'Green Earth', workType: 'Environment', locality: 'Mumbai', efficiency: 7 },
-    { name: 'Care for All', workType: 'Health', locality: 'Bangalore', efficiency: 8 },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      const snapshot = await getDocs(collection(db, 'ngos'));
+      const data = snapshot.docs.map(doc => doc.data());
+      setNgoData(data);
+    };
+    fetchData();
+  }, []);
 
   const filteredNGOs = ngoData.filter(ngo =>
     (filters.workType === '' || ngo.workType.toLowerCase().includes(filters.workType.toLowerCase())) &&
@@ -20,15 +29,19 @@ function App() {
   );
 
   return (
+    <>
     <div className="container">
       <h1>Kadam</h1>
       <p>Take a step towards change</p>
       <FilterPanel filters={filters} setFilters={setFilters} />
       <NGOList ngos={filteredNGOs} />
-    </div>
-  );
 
+
+    
+    </div>
+
+    </>
+  );
 }
 
 export default App;
-
