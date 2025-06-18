@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
-import '../App.css';
+import '../../App.css';
 
 function Home() {
   const navigate = useNavigate();
@@ -15,10 +15,10 @@ function Home() {
       </section>
 
       <section className="user-selection">
-        <h2>ARE YOU A</h2>
+        <h2>ARE YOU AN</h2>
         <div className="buttons">
           <button onClick={() => navigate('/ngos')}>NGO</button>
-          <span>OR AN</span>
+          <span>OR A</span>
           <button>DONOR</button>
         </div>
       </section>
