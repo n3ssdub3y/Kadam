@@ -4,30 +4,54 @@ import Navbar from './Navbar';
 import Stats from './Statistics';
 import './LandingPage.css';
 
-function Home() {
-  const navigate = useNavigate();
-
+const Home = () => {
   return (
-    <div className="landing-page">
-      <Navbar />
-      
-      <section className="hero">
-        <h1>One small Kadam for change, one giant leap for humanity.</h1>
-      </section>
+    <>
+    <Navbar></Navbar>
+    <section className="hero-section">
+      {/* Background Image with Overlay */}
+      <div className="hero-background">
+        <div className="hero-overlay"></div>
+      </div>
 
-      <section className="user-selection">
-        <h2>ARE YOU AN</h2>
-        <div className="buttons">
-          <button onClick={() => navigate('/ngos')}>NGO</button>
-          <span>OR A</span>
-          <button>DONOR</button>
+      {/* Content */}
+      <div className="hero-content">
+        <h1 className="hero-title animate-fade-in">
+          Kadam
+        </h1>
+        
+        <p 
+          className="hero-subtitle animate-fade-in" 
+          style={{ animationDelay: '0.2s' }}
+        >
+          One small Kadam for change, one giant leap for humanity
+        </p>
+
+        {/* CTA Buttons */}
+        <div 
+          className="hero-buttons-container animate-fade-in" 
+          style={{ animationDelay: '0.4s' }}
+        >
+          <div className="hero-button-group">
+            <p className="hero-button-label">ARE YOU A</p>
+            <button className="hero-button">
+              DONOR
+            </button>
+          </div>
+          
+          <div className="hero-button-group">
+            <p className="hero-button-label">OR AN</p>
+            <button className="hero-button">
+              NGO
+            </button>
+          </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-<Stats></Stats>
-    </div>
+    <Stats></Stats>
+    </>
   );
-}
-
+};
 
 export default Home;

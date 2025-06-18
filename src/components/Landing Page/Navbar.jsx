@@ -2,19 +2,32 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './LandingPage.css';
 
-function Navbar() {
+const Navbar = () => {
+  const navItems = ['Home', 'Causes', 'Single Cause', 'About Us', 'Contact Us'];
+
   return (
-    <nav>
-      <div className="logo">Kadam</div>
-      <div className="nav-links">
-        <Link to="/">Home</Link>
-        <Link to="/">Causes</Link>
-        <Link to="/">Single Cause</Link>
-        <Link to="/">About Us</Link>
-        <Link to="/">Contact Us</Link>
+    <header className="navbar">
+      <div className="navbar-container">
+        {/* Logo */}
+        <div className="logo-container">
+          <span className="logo-text">Kadam</span>
+        </div>
+
+        {/* Navigation */}
+        <nav className="nav-menu">
+          {navItems.map((item, index) => (
+            <a
+              key={index}
+              href="#"
+              className="nav-link"
+            >
+              {item}
+            </a>
+          ))}
+        </nav>
       </div>
-    </nav>
+    </header>
   );
-}
+};
 
 export default Navbar;

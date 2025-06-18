@@ -13,7 +13,7 @@ return(
      <section className="stats">
         <div className="stats-grid">
           <StatCard number="1.2k+" label="Projects Completed" />
-          <StatCard number="100" label="Monthly Donate" />
+          <StatCard number="500" label="Monthly Donate" />
           <StatCard number="1200+" label="Partners Worldwide" />
           <StatCard number="1.4m" label="Donations Received" />
         </div>
