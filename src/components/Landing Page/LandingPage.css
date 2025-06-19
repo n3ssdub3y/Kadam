@@ -43,7 +43,7 @@
 .hero-background {
   position: absolute;
   inset: 0;
-  background-image: url('/public/poor_children.jpeg');
+  background-image: url('/poor_children.jpeg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
