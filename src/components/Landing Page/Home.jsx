@@ -44,11 +44,11 @@ const Home = () => {
             <div className="hero-button-group">
               <p className="hero-button-label">OR AN</p>
               <button
-                className="hero-button"
-                onClick={() => navigate('/ngos')} // ✅ Add correct path
-              >
-                NGO
-              </button>
+  className="hero-button"
+  onClick={() => navigate('/register')}
+>
+  NGO
+</button>
             </div>
           </div>
         </div>
