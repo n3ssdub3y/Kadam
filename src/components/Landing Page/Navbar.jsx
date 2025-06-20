@@ -6,7 +6,7 @@ const Navbar = () => {
   const navItems = ['Home', 'Causes', 'Single Cause', 'About Us', 'Contact Us'];
 
   return (
-    <header className="navbar">
+    <header className="navbar" >
       <div className="navbar-container">
         {/* Logo */}
         <div className="logo-container">

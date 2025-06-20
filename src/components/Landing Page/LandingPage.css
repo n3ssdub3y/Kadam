@@ -157,6 +157,16 @@
   z-index: 50;
   padding: 1rem 1.5rem;
 }
+.navbar {
+  background-color:  rgb(132, 204, 22,0.5); /* Green with 50% transparency */
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 
 .navbar-container {
   max-width: 80rem;
@@ -192,7 +202,7 @@
 }
 
 .nav-link:hover {
-  color: #84cc16;
+  color: rgb(132, 204, 22);
 }
 
 /* Responsive Navbar */
@@ -201,3 +211,15 @@
     display: flex;
   }
 }
+
+.nav-link {
+  color: black;          /* Make text black */
+  font-weight: bold;     /* Make text bold */
+  text-decoration: none; /* Optional: remove underline */
+  margin-left: 0rem;     /* Optional: space between links */
+}
+.nav-link:hover {
+  color: darkgreen;
+  text-decoration: underline;
+}
+
