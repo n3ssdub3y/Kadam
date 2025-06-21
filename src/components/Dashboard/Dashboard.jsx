@@ -1,6 +1,6 @@
 function Dashboard(){
     return(
-        <h1>hello</h1>
+        <h1>DIS IS DA DASHBOARD PAGE</h1>
     );
 }
 export default Dashboard;

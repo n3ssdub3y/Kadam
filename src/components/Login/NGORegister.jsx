@@ -100,7 +100,7 @@ const NGORegister = () => {
         
         <p className="login-link">
           Already have an account? 
-          <Link to="/NGOlogin">Login here</Link>
+          <Link to="/NGOlogin"> Login here</Link>
         </p>
       </form>
     </div>

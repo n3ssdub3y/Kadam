@@ -6,7 +6,7 @@
   --soft-blue: #93c5fd;
   --light-gray: #f5f5f5;
   --white: #ffffff;
-  --dark-gray: #333333;
+  --dark-gray: #000000;
   --transition: all 0.3s ease;
 }
 
@@ -29,7 +29,7 @@
 
 
 .register-form {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.7);
   padding: 2.5rem;
   border-radius: 16px;
   width: 800px;
@@ -65,6 +65,42 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
   margin-bottom: 2rem;
+}
+.form-grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+/* Add these styles at the end of Register.css */
+.google-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  color: #333333;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 70%;
+}
+
+.google-button:hover {
+  background: #f5f5f5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.google-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .form-group {
@@ -139,7 +175,7 @@
   text-align: center;
   margin-top: 1.5rem;
   color: var(--dark-gray);
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
 .login-link a {
