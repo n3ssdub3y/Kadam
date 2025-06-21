@@ -1,41 +1,58 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import Stats from './Statistics';
 import './LandingPage.css';
 
 const Home = () => {
-  const navigate = useNavigate(); // ✅ Hook added
+  const navigate = useNavigate();
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (videoRef.current) {
+        const scrollPosition = window.scrollY;
+        const scale = 1 + scrollPosition * 0.0005;
+        videoRef.current.style.transform = `scale(${scale})`;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <>
+    <div className="landing-page">
       <Navbar />
+      
       <section className="hero-section">
-        {/* Background Image with Overlay */}
         <div className="hero-background">
+          <video
+            ref={videoRef}
+            className="background-video"
+            autoPlay
+            loop
+            muted
+            playsInline
+          >
+            <source src="/public/poor_children.mp4" type="video/mp4" />
+          </video>
           <div className="hero-overlay"></div>
+          
         </div>
 
-        {/* Content */}
         <div className="hero-content">
           <h1 className="hero-title animate-fade-in">Kadam</h1>
-          <p
-            className="hero-subtitle animate-fade-in"
-            style={{ animationDelay: '0.2s' }}
-          >
+          <p className="hero-subtitle animate-fade-in">
             One small Kadam for change, one giant leap for humanity
           </p>
 
-          {/* CTA Buttons */}
-          <div
-            className="hero-buttons-container animate-fade-in"
-            style={{ animationDelay: '0.4s' }}
-          >
+          <div className="hero-buttons-container">
             <div className="hero-button-group">
               <p className="hero-button-label">ARE YOU A</p>
               <button
-                className="hero-button"
-                onClick={() => navigate('/ngos')} // ✅ Add correct path
+                className="hero-button animate-fade-in"
+                onClick={() => navigate('/ngos')}
               >
                 DONOR
               </button>
@@ -44,18 +61,18 @@ const Home = () => {
             <div className="hero-button-group">
               <p className="hero-button-label">OR AN</p>
               <button
-  className="hero-button"
-  onClick={() => navigate('/register')}
->
-  NGO
-</button>
+                className="hero-button animate-fade-in"
+                onClick={() => navigate('/register')}
+              >
+                NGO
+              </button>
             </div>
           </div>
         </div>
       </section>
 
       <Stats />
-    </>
+    </div>
   );
 };
 
