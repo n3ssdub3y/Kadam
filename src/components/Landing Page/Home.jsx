@@ -54,7 +54,7 @@ const Home = () => {
                 className="hero-button animate-fade-in"
                 onClick={() => navigate('/ngos')}
               >
-                DONOR
+                VIEWER
               </button>
             </div>
 
@@ -62,7 +62,7 @@ const Home = () => {
               <p className="hero-button-label">OR AN</p>
               <button
                 className="hero-button animate-fade-in"
-                onClick={() => navigate('/register')}
+                onClick={() => navigate('/NGOregister')}
               >
                 NGO
               </button>

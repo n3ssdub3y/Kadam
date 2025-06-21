@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { db } from '../../firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
 import './Register.css'; // Import the CSS file
 import { Link } from 'react-router-dom'; // Import Link for navigation
 
-const RegisterFirebase = () => {
+const NGORegister = () => {
+    const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     name: '',
     ngoName: '',
@@ -44,11 +47,12 @@ const RegisterFirebase = () => {
           year:        Number(year)
         }
       );
-      alert('✅ Registered successfully in Firestore!');
+      alert('✅ NGO Registered successfully!');
+      navigate('/dashboard'); // move here
       setFormData({ name:'', ngoName:'', email:'', password:'', phone:'', city:'', state:'', year:'' });
     } catch (err) {
       console.error('Firestore write error:', err);
-      alert('❌ Registration failed. See console.');
+      alert('❌ Sorry, Registration failed.');
     } finally {
       setLoading(false);
     }
@@ -95,11 +99,12 @@ const RegisterFirebase = () => {
         </button>
         
         <p className="login-link">
-          Already have an account? <Link to="/login">Login here</Link>
+          Already have an account? 
+          <Link to="/NGOlogin">Login here</Link>
         </p>
       </form>
     </div>
   );
 };
 
-export default RegisterFirebase;
+export default NGORegister;
