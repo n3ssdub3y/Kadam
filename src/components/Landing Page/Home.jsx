@@ -35,7 +35,7 @@ const Home = () => {
             muted
             playsInline
           >
-            <source src="/public/poor_children.mp4" type="video/mp4" />
+            <source src="poor_children.mp4" type="video/mp4" />
           </video>
           <div className="hero-overlay"></div>
           
