@@ -1,0 +1,85 @@
+<!-- <p>postsinfeed works!</p> -->
+
+<div class="posts" id="posts" >
+    <div class="text-center text-muted" *ngIf="posts.length==0" style="background-color: transparent;">
+        No posts available
+    </div>
+    <div *ngIf="posts.length!=0" >
+        <div class="form-group" style="margin-top: 0px;margin-left: 15px;margin-bottom: 30px;">
+            <h3>Sort by:</h3>
+            <mat-radio-group  aria-label="Select an option" name="radioprivacy" id="radioprivacy" [(ngModel)]="sortType" required>
+              <mat-radio-button  (click)="changeSort(0)" [value]=0  style="margin-right: 10px;" name="private">Date posted</mat-radio-button>
+              <mat-radio-button (click)="changeSort(1)" [value]=1 name="public">Relevance</mat-radio-button>
+            </mat-radio-group> 
+        </div>   
+    </div>
+
+    <div  *ngFor="let post of posts; let i = index">
+        <div class="card">
+            <div class="card-body ">
+                <div class="container">
+                    <div class=" box box-widget">
+                        <div class="box-header with-border">
+                            <div class="user-block"> 
+                                <img class="img-circle" *ngIf="post.owner.profilePicture" [src]="displayProfilePhoto(post.owner)">
+                                <img *ngIf="!post.owner.profilePicture" class="img-circle" src="https://www.donkey.bike/wp-content/uploads/2020/12/user-member-avatar-face-profile-icon-vector-22965342-e1608640557889.jpg" alt="User Image">
+                                <span class="username"><a (click)="goToProfile(post.owner)" style="cursor: pointer;" data-abc="true">{{post.owner.name}} {{post.owner.surname}}</a></span> <br>
+                                <span class="description">{{post.timestamp | date:'d MMMM y, h:mm a'}}</span> 
+                            </div>
+                            <div class="box-tools"> 
+                                <button type="button" class="btn btn-box-tool" data-toggle="tooltip" title="" data-original-title="Mark as read"> 
+                                    <i class="fa fa-circle-o"></i>
+                                </button>  
+                            </div>
+                        </div>
+                        <div class="box-body"> 
+                            <div class="content">
+                                <h3>{{post.content}}</h3>
+                            </div>
+                            <div *ngIf="post.pictures.length!=0" >
+                                <div *ngFor="let pic of post.pictures">
+                                    <img  class="img-responsive pad" [src]="displayPicture(pic)">
+                                </div>
+                            </div>
+
+                            <button *ngIf="!userIsInterested(post)" type="button" class="btn btn-primary btn-xs" (click)="setUserInterested(post)">
+                                <i class="fas fa-thumbs-up"></i> Interesting!
+                            </button> 
+                            <button *ngIf="userIsInterested(post)" type="button" class="btn btn-outline-primary btn-xs" (click)="setUserInterested(post)">
+                                <i class="fas fa-thumbs-up"></i> Undo Interesting!
+                            </button> 
+                            <span class="pull-right text-muted">{{post.interestReactions.length}} users are interested - {{post.comments.length}} comments</span>
+                        </div>
+                        <div *ngIf="post.comments.length" class="box-footer box-comments">
+                            <div  *ngFor="let comment of post.comments">
+                                <div class="box-comment">
+                                    <img class="img-circle img-sm" *ngIf="comment.userMadeBy.profilePicture" [src]="displayProfilePhoto(comment.userMadeBy)">
+                                    <img class="img-circle img-sm" *ngIf="!comment.userMadeBy.profilePicture" src="https://www.donkey.bike/wp-content/uploads/2020/12/user-member-avatar-face-profile-icon-vector-22965342-e1608640557889.jpg">
+                                    <div class="comment-text"> 
+                                        <span class="username"><a (click)="goToProfile(comment.userMadeBy)" style="cursor: pointer;" data-abc="true"> <b>{{comment.userMadeBy.name}} {{comment.userMadeBy.surname}}</b></a>
+                                            <span class="text-muted pull-right">{{comment.timestamp | date:'d MMMM y, h:mm a'}}</span> 
+                                        </span> {{comment.content}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <form name="form-{{i}}" #commentform="ngForm" (ngSubmit)="addNewComment(post,commentform)"> 
+                                
+                                <img class="img-responsive img-circle img-sm" *ngIf="user.profilePicture" [src]="displayProfilePhoto(user)">
+                                <img class="img-responsive img-circle img-sm" *ngIf="!user.profilePicture" src="https://www.donkey.bike/wp-content/uploads/2020/12/user-member-avatar-face-profile-icon-vector-22965342-e1608640557889.jpg">
+                                <div class="img-push ">
+                                    <textarea id="{{i}}" name="content-{{i}}" [(ngModel)]="post.newComment.content" rows="1" type="text" class="form-control text-post" placeholder="Press enter to post comment"></textarea>
+                                    <button [disabled]="!post.newComment.content" class="btn post-btn btn-primary btn-sm align-right" type="submit"  style="margin-top:5px;background-color:#158eff; color:white;float: right;">
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+        </div>
+</div>
+
+

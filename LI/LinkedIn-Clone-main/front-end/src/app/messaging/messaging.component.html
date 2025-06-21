@@ -1,0 +1,107 @@
+<app-navbar></app-navbar>
+
+<div style="margin-top: 5%;" class="container-fluid ">
+    <div class="messaging col-md-12">
+        <div class="inbox_msg">
+            <div class="inbox_people">
+                <div class="headind_srch">
+                    <div class="recent_heading">
+                        <h4><b>Recent</b></h4>
+                    </div>
+                </div>
+                <div class="inbox_chat">
+                    <div *ngIf="user.chats.length == 0" class="text-center text-muted m-4">
+                      No chats available
+                    </div>
+                    <div *ngFor="let chat of chats">
+                      <div [ngClass]="{ 'active_chat' : chat.id == currentChat.id }">
+                        <div class="  chat_list " (click)="openChat(chat)" id="selectButton-{{chat.id}}" style="text-align: initial;">
+                          <div class="chat_people">
+                              <div class="chat_img">
+                                  <!-- <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> -->
+                                  <a (click)="goToProfile(getOtherUser(chat))">
+                                    <div *ngIf="getOtherUser(chat).profilePicture">
+                                      <img [src]="displayProfilePhoto(getOtherUser(chat))" class="rounded-circle" style="width: 60px;" alt="" loading="lazy">
+                                    </div>
+                                    <div *ngIf="!getOtherUser(chat).profilePicture">
+                                      <img src="https://www.donkey.bike/wp-content/uploads/2020/12/user-member-avatar-face-profile-icon-vector-22965342-e1608640557889.jpg" class="rounded-circle" style="width: 60px;" alt="" loading="lazy">
+                                    </div>
+                                  </a>
+                              </div>
+                              <div *ngIf="chat.messages.length!=0" class="chat_ib" >
+                                <h5> <strong>{{getOtherUser(chat).name}} {{getOtherUser(chat).surname}}</strong>
+                                  <span class="chat_date" style="font-size: small; float: right;">{{chat.latestMessage.timestamp | date:'d/M/y, h:mm a'}}</span>
+                                </h5>
+                                <p *ngIf="chat.latestMessage.userMadeBy.id == user.id" style="width: 100%;" class="text-muted w-100"><b>You:</b> {{chat.latestMessage.content}}</p>
+                                <p *ngIf="chat.latestMessage.userMadeBy.id != user.id" style="width: 100%;" class="text-muted w-100">{{chat.latestMessage.content}}</p>
+
+                              </div>
+                            <div *ngIf="chat.messages.length==0" class="chat_ib" >
+                              <h5> <strong>{{getOtherUser(chat).name}} {{getOtherUser(chat).surname}}</strong>
+                                <span class="chat_date" style="font-size: small; float: right;"></span>
+                              </h5>
+                              <p style="width: 100%;" class="text-muted w-100">Start conversation!</p>
+                          </div>
+                        </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mesgs" *ngIf="currentChat!=null">
+              <div class="msg_history" >
+                <div *ngIf="currentChat.messages.length == 0" class="text-center text-muted m-4">
+                  No messages yet
+                </div>
+                <div *ngIf="currentChat.messages.length != 0" class="text-center text-muted m-4">
+                  <div *ngFor="let message of currentChat.messages">
+                  
+                  
+                    <div *ngIf="isIncoming(message)" class="incoming_msg" style="text-align: left;margin-top: 15px;">
+                      <div class="incoming_msg_img"> 
+                        <a (click)="goToProfile(message.userMadeBy)">
+                          <div *ngIf="message.userMadeBy.profilePicture">
+                            <img [src]="displayProfilePhoto(message.userMadeBy)" class="rounded-circle" style="cursor: pointer;">
+                          </div>
+                          <div *ngIf="!message.userMadeBy.profilePicture">
+                            <img src="https://www.donkey.bike/wp-content/uploads/2020/12/user-member-avatar-face-profile-icon-vector-22965342-e1608640557889.jpg" class="rounded-circle" style="cursor: pointer;">
+                          </div>
+                        </a>
+                      </div>
+                      <div class="received_msg">
+                        <div class="received_withd_msg" >
+                          <p>{{message.content}}</p>
+                          <span class="time_date">{{message.timestamp | date:'d MMMM y, h:mm a'}}</span> </div>
+                      </div>
+                    </div>
+                    
+                    
+                    <div *ngIf="!isIncoming(message)" class="outgoing_msg" style="text-align: right;">
+                      <div class="sent_msg">
+                        <p>{{message.content}}</p>
+                        <span class="time_date">{{message.timestamp | date:'d MMMM y, h:mm a'}}</span> </div>
+                    </div>
+  
+  
+  
+                  </div>
+                </div>
+
+              </div>
+              <div class="type_msg">
+                <div class="input_msg_write">
+                  <form name="form" #messageform="ngForm" (ngSubmit)="addMessage(messageform)">
+                    <input [(ngModel)]="newMessage.content" type="text" name="content" id="content" class="write_msg" placeholder="Type a message" />
+                    <button [disabled]="!newMessage.content"  class="msg_send_btn" type="submit">
+                      <i class="far fa-paper-plane"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+<app-footer></app-footer>

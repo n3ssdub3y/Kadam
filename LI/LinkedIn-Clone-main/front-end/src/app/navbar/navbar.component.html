@@ -1,0 +1,73 @@
+
+  <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light  fixed-top" style="position: absolute;">
+    <!-- Container wrapper -->
+    <div class="container">
+      <!-- Navbar brand -->
+      <a href="/feed">
+        <img id="mylogo" src="../../../assets/images/logo2.png" alt="" width="200">
+      </a>
+      <!-- Search form -->
+      <!-- <form class="input-group search-area" style="width: 300px">
+        <input type="search" class="form-control" placeholder="Search" aria-label="Search" />
+      </form> -->
+  
+      <!-- Toggle button -->
+      <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
+        data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+  
+      <!-- Collapsible wrapper -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Left links -->
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0" >
+          <li class="nav-item">
+            <a class="nav-link active d-flex flex-column text-center" aria-current="page" href="/feed"><i class="fas fa-home fa-lg"></i><span class="small">Home</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex flex-column text-center" aria-current="page" href="/network"><i class="fas fa-user-friends fa-lg"></i><span class="small">My Network</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex flex-column text-center" aria-current="page" href="/jobs"><i class="fas fa-briefcase fa-lg"></i><span class="small">Jobs</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex flex-column text-center" aria-current="page" href="/messaging"><i class="fas fa-comment-dots fa-lg"></i><span class="small">Messaging</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex flex-column text-center" aria-current="page" href="/notifications"><i class="fas fa-bell fa-lg"></i><span class="small">Notifications</span></a>
+          </li>
+          <!-- <li class="nav-item dropdown"  ngbDropdown> -->
+            
+            <li class="nav-item text-center">
+              <div ngbDropdown class="d-inline-block">
+                
+                <div *ngIf="user.profilePicture">
+                  <button class="btn" id="dropdownBasic1" ngbDropdownToggle>
+                    <img [src]="displayProfilePhoto()" class="rounded-circle" height="40" alt="" loading="lazy">
+                  </button>
+                </div>
+                <div *ngIf="!user.profilePicture">
+                  <button class="btn" id="dropdownBasic1" ngbDropdownToggle>
+                    <img src="https://www.donkey.bike/wp-content/uploads/2020/12/user-member-avatar-face-profile-icon-vector-22965342-e1608640557889.jpg" class="rounded-circle" height="40" alt="" loading="lazy">
+                  </button>
+                </div>
+                
+                <div ngbDropdownMenu id="mydropdown">
+                  <button ngbDropdownItem *ngIf="userDetails" type="button" class="btn" (click)="goToProfile()" > Profile </button>
+                  <button ngbDropdownItem ><a aria-current="page"[routerLink]="['/settings']" id="set-btn">Settings</a></button>
+                  <button ngbDropdownItem (click)="logout()">Logout</button>
+                </div>
+              </div>
+            </li>
+          <!-- </li>  -->
+              
+        </ul>
+        <!-- Left links -->
+      </div>
+      <!-- Collapsible wrapper -->
+    </div>
+    <!-- Container wrapper -->
+  </nav>
+  <!-- Navbar -->
