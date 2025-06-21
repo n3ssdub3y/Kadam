@@ -27,48 +27,6 @@ body {
   position: relative;
 }
 
-/* Floating orbs */
-.floating-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(20px);
-  z-index: 0;
-  animation: float 12s infinite ease-in-out;
-}
-
-.orb-1 {
-  width: 150px;
-  height: 150px;
-  background: rgba(132, 204, 22, 0.15);
-  top: 20%;
-  left: 10%;
-  animation-delay: 0s;
-}
-
-.orb-2 {
-  width: 100px;
-  height: 100px;
-  background: rgba(147, 197, 253, 0.15);
-  top: 60%;
-  right: 15%;
-  animation-delay: 2s;
-}
-
-.orb-3 {
-  width: 80px;
-  height: 80px;
-  background: rgba(255, 255, 255, 0.15);
-  bottom: 20%;
-  left: 20%;
-  animation-delay: 4s;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0) translateX(0); }
-  25% { transform: translateY(-30px) translateX(20px); }
-  50% { transform: translateY(20px) translateX(-20px); }
-  75% { transform: translateY(-20px) translateX(-30px); }
-}
 
 /* Hero Section */
 .hero-section {

@@ -34,11 +34,6 @@ const Register = () => {
     <div className="register-container">
       <div className="register-overlay"></div>
       
-      {/* Floating orbs */}
-      <div className="register-orb orb-1"></div>
-      <div className="register-orb orb-2"></div>
-      <div className="register-orb orb-3"></div>
-      
       <form className="register-form" onSubmit={handleSubmit}>
         <h2 className="register-title">Register Your NGO</h2>
         

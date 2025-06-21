@@ -1,7 +1,8 @@
-// src/RegisterFirebase.jsx
 import React, { useState } from 'react';
 import { db } from '../../firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
+import './Register.css'; // Import the CSS file
+import { Link } from 'react-router-dom'; // Import Link for navigation
 
 const RegisterFirebase = () => {
   const [formData, setFormData] = useState({
@@ -24,21 +25,19 @@ const RegisterFirebase = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, ngoName, email, password, phone, city, state, year } = formData;
-    // basic validation
     if (!name || !ngoName || !email || !password || !phone || !city || !state || !year) {
       return alert('All fields are required');
     }
 
     setLoading(true);
     try {
-      // setDoc will create (or overwrite) a document at NGOs/{ngoName}
       await setDoc(
         doc(db, 'NGOs', ngoName.trim()),
         {
           name:        String(name).trim(),
           ngoName:     String(ngoName).trim(),
           email:       String(email).trim(),
-          password:    String(password),        // consider hashing in real apps!
+          password:    String(password),
           phone:       String(phone).trim(),
           city:        String(city).trim(),
           state:       String(state).trim(),
@@ -56,33 +55,50 @@ const RegisterFirebase = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: 400, margin: '0 auto' }}>
-      <h2>NGO Registration</h2>
-      {[
-        { label: 'Your Name', name: 'name', type: 'text' },
-        { label: 'NGO Name', name: 'ngoName', type: 'text' },
-        { label: 'Email', name: 'email', type: 'email' },
-        { label: 'Password', name: 'password', type: 'password' },
-        { label: 'Phone No.', name: 'phone', type: 'tel' },
-        { label: 'City', name: 'city', type: 'text' },
-        { label: 'State', name: 'state', type: 'text' },
-        { label: 'Year', name: 'year', type: 'number' }
-      ].map(({ label, name, type }) => (
-        <div key={name} style={{ marginBottom: 12 }}>
-          <label style={{ display: 'block', marginBottom: 4 }}>{label}</label>
-          <input
-            name={name}
-            type={type}
-            value={formData[name]}
-            onChange={handleChange}
-            style={{ width: '100%', padding: 8, boxSizing: 'border-box' }}
-          />
+    <div className="register-container">
+      <div className="register-overlay"></div>
+      
+      <form className="register-form" onSubmit={handleSubmit}>
+        <h2 className="register-title">Register Your NGO</h2>
+        
+        <div className="form-grid">
+          {[
+            { label: 'Your Full Name', name: 'name', type: 'text' },
+            { label: 'NGO Name', name: 'ngoName', type: 'text' },
+            { label: 'Email', name: 'email', type: 'email' },
+            { label: 'Password', name: 'password', type: 'password' },
+            { label: 'Phone Number', name: 'phone', type: 'tel' },
+            { label: 'City', name: 'city', type: 'text' },
+            { label: 'State', name: 'state', type: 'text' },
+            { label: 'Year of Starting', name: 'year', type: 'number' }
+          ].map(({ label, name, type }) => (
+            <div className="form-group" key={name}>
+              <label>{label}</label>
+              <input
+                name={name}
+                type={type}
+                value={formData[name]}
+                onChange={handleChange}
+                required
+                className="form-input"
+              />
+            </div>
+          ))}
         </div>
-      ))}
-      <button type="submit" disabled={loading} style={{ padding: '8px 16px' }}>
-        {loading ? 'Registering…' : 'Register'}
-      </button>
-    </form>
+        
+        <button 
+          type="submit" 
+          className="register-button"
+          disabled={loading}
+        >
+          {loading ? 'Registering...' : 'Register'}
+        </button>
+        
+        <p className="login-link">
+          Already have an account? <Link to="/login">Login here</Link>
+        </p>
+      </form>
+    </div>
   );
 };
 
