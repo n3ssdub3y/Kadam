@@ -10,19 +10,12 @@ body {
 }
 
 .container {
-  display: grid;
+  display: flex;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   padding: 40px;
-  width: 90%;
-  max-width: 1200px;
-}
-
-.bottom-row {
-  grid-column: span 3;
-  display: flex;
-  justify-content: center;
-  gap: 55px;
+  width: 100%;
+  max-width: 1500px;
 }
 
 .card {
@@ -81,6 +74,8 @@ body {
   font-weight: bold;
   z-index: 1;
   position: relative;
+  width: 50%;
+  align-self: center;
 }
 
 .card a:hover {
