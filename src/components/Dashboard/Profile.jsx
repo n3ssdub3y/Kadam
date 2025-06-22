@@ -1,16 +1,18 @@
-// src/components/Profile.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../../firebaseConfig';
 import {
   doc,
   getDoc,
-  updateDoc
+  updateDoc,
+  collection,
+  setDoc
 } from 'firebase/firestore';
 import { uploadToCloudinary } from '../../cloudinary';
 
 const Profile = () => {
   const [ngo, setNgo] = useState(null);
+  const [logoURL, setLogoURL] = useState('');
   const [descInput, setDescInput] = useState('');
   const [editMode, setEditMode] = useState(false);
   const [editedFields, setEditedFields] = useState({});
@@ -19,20 +21,30 @@ const Profile = () => {
   const [newValue, setNewValue] = useState('');
   const navigate = useNavigate();
 
+  const excludedFields = ['id', 'name', 'ngoName', 'email', 'password', 'city', 'state', 'year', 'description', 'phone'];
+
   useEffect(() => {
-    const fetchNGO = async () => {
+    const fetchData = async () => {
       const id = localStorage.getItem('ngoId');
       if (!id) return;
-      const refDoc = doc(db, 'NGOs', id);
-      const snap = await getDoc(refDoc);
-      if (snap.exists()) {
-        const data = snap.data();
-        setNgo({ id: snap.id, ...data });
+
+      const ngoRef = doc(db, 'NGOs', id);
+      const ngoSnap = await getDoc(ngoRef);
+      if (ngoSnap.exists()) {
+        const data = ngoSnap.data();
+        setNgo({ id: ngoSnap.id, ...data });
         setDescInput(data.description || '');
         setEditedFields(data);
       }
+
+      const logoRef = doc(db, 'NGOs', id, 'pics', 'logo');
+      const logoSnap = await getDoc(logoRef);
+      if (logoSnap.exists()) {
+        setLogoURL(logoSnap.data().logoURL || '');
+      }
     };
-    fetchNGO();
+
+    fetchData();
   }, []);
 
   const handleDescriptionUpdate = async () => {
@@ -46,9 +58,9 @@ const Profile = () => {
     if (!file || !ngo) return;
     try {
       const url = await uploadToCloudinary(file);
-      const ngoRef = doc(db, 'NGOs', ngo.id);
-      await updateDoc(ngoRef, { logoURL: url });
-      setNgo(prev => ({ ...prev, logoURL: url }));
+      const logoDocRef = doc(db, 'NGOs', ngo.id, 'pics', 'logo');
+      await setDoc(logoDocRef, { logoURL: url }, { merge: true });
+      setLogoURL(url);
     } catch (err) {
       console.error(err);
       alert('Logo upload failed');
@@ -95,9 +107,9 @@ const Profile = () => {
     }}>
       <div style={{ textAlign: 'center' }}>
         <label htmlFor="upload-logo" style={{ cursor: 'pointer' }}>
-          {ngo.logoURL ? (
+          {logoURL ? (
             <img
-              src={ngo.logoURL}
+              src={logoURL}
               alt="NGO Logo"
               style={{ width: '200px', height: '200px', objectFit: 'cover', borderRadius: '10px' }}
             />
@@ -158,29 +170,22 @@ const Profile = () => {
           </p>
         ))}
 
-        {/* Render custom fields */}
+        {/* Render custom fields (excluding known fields) */}
         {Object.entries(ngo).map(([key, value]) =>
-          !['id', 'logoURL', 'name', 'ngoName', 'email', 'password', 'city', 'state', 'year', 'description', 'phone'].includes(key) && (
+          !excludedFields.includes(key) && (
             <p key={key}>
-              <strong>{key}:</strong> {value}
+              <strong>{key}:</strong>{' '}
+              {editMode ? (
+                <input
+                  value={editedFields[key] || ''}
+                  onChange={(e) => handleFieldChange(key, e.target.value)}
+                />
+              ) : value}
             </p>
           )
         )}
 
-        {/* Action Buttons */}
-        <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <button onClick={() => editMode ? handleSaveEdits() : setEditMode(true)}>
-            {editMode ? 'Save Profile' : 'Edit Profile'}
-          </button>
-          <button onClick={() => setShowAddSection(true)}>
-            Add a Section
-          </button>
-          <button onClick={handleLogout}>
-            Logout
-          </button>
-        </div>
-
-        {/* Add Section Form (hidden until toggled) */}
+        {/* Add Section UI */}
         {showAddSection && (
           <div style={{ marginTop: '20px', textAlign: 'left' }}>
             <h4>Add a Section</h4>
@@ -201,6 +206,15 @@ const Profile = () => {
             </button>
           </div>
         )}
+
+        {/* Buttons */}
+        <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <button onClick={() => editMode ? handleSaveEdits() : setEditMode(true)}>
+            {editMode ? 'Save Profile' : 'Edit Profile'}
+          </button>
+          <button onClick={() => setShowAddSection(true)}>Add a Section</button>
+          <button onClick={handleLogout}>Logout</button>
+        </div>
       </div>
     </div>
   );
