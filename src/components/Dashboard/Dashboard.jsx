@@ -1,6 +1,10 @@
+import Profile from './Profile'
+
 function Dashboard(){
     return(
-        <h1>DIS IS DA DASHBOARD PAGE</h1>
+        <>
+        <Profile></Profile>
+        </>
     );
 }
 export default Dashboard;

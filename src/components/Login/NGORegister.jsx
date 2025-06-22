@@ -1,3 +1,5 @@
+// this is NGORegister.jsx
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../../firebaseConfig';
@@ -34,11 +36,13 @@ const NGORegister = () => {
 
     setLoading(true);
     try {
+      const id = ngoName.trim();
       await setDoc(
-        doc(db, 'NGOs', ngoName.trim()),
+        doc(db, 'NGOs', id),
         {
+          id, // <- store the ID too
           name:        String(name).trim(),
-          ngoName:     String(ngoName).trim(),
+          ngoName:     id,
           email:       String(email).trim(),
           password:    String(password),
           phone:       String(phone).trim(),
@@ -47,6 +51,10 @@ const NGORegister = () => {
           year:        Number(year)
         }
       );
+
+      // remember who just registered, so Profile.jsx can fetch them
+      localStorage.setItem('ngoId', id);
+
       alert('✅ NGO Registered successfully!');
       navigate('/dashboard'); // move here
       setFormData({ name:'', ngoName:'', email:'', password:'', phone:'', city:'', state:'', year:'' });

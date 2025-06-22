@@ -1,3 +1,5 @@
+// this is NGOLogin.jsx
+
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { db } from '../../firebaseConfig';
@@ -40,9 +42,12 @@ const Login = () => {
 
         // 2. Check password (plaintext comparison; secure hashing recommended in production)
         if (data.password === password) {
-          // 3. Successful login → redirect
+          // 3. Successful login → remember which NGO, then redirect
+          const id = docSnap.id;
+          localStorage.setItem('ngoId', id);
           navigate('/dashboard');
-        } else {
+        }
+        else {
           alert('Incorrect password');
         }
       }

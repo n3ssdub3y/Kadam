@@ -163,7 +163,7 @@ body {
 /* Stats Section */
 .stats {
   padding: 6rem 2rem;
-  background: linear-gradient(to bottom, var(--light-gray) 0%, var(--white) 100%);
+  background: linear-gradient(to bottom, var(--light-gray) 0%, var(--light-gray) 100%);
   position: relative;
 }
 
@@ -209,6 +209,7 @@ body {
   overflow: hidden;
   border: 1px solid rgba(132, 204, 22, 0.1);
   cursor: pointer;
+  text-align: center;
 }
 
 .stat-card::before {

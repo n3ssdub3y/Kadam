@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './LandingPage.css';
 
-const StatCard = ({ number, label, icon }) => {
+const StatCard = ({ number, label, icon, prefix = '', suffix = '' }) => {
   const [count, setCount] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef(null);
-  
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -16,21 +16,21 @@ const StatCard = ({ number, label, icon }) => {
       },
       { threshold: 0.1 }
     );
-    
+
     if (ref.current) {
       observer.observe(ref.current);
     }
-    
+
     return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
     if (!isVisible) return;
-    
+
     const duration = 2000;
     const increment = Math.ceil(number / (duration / 16));
     let current = 0;
-    
+
     const timer = setInterval(() => {
       current += increment;
       if (current >= number) {
@@ -40,14 +40,14 @@ const StatCard = ({ number, label, icon }) => {
         setCount(current);
       }
     }, 16);
-    
+
     return () => clearInterval(timer);
   }, [isVisible, number]);
 
   return (
     <div className="stat-card" ref={ref}>
       <div className="stat-icon">{icon}</div>
-      <h3>{count.toLocaleString()}{label.includes('+') ? '+' : ''}</h3>
+      <h3>{prefix}{count.toLocaleString()}{suffix}</h3>
       <p>{label}</p>
     </div>
   );
@@ -57,8 +57,8 @@ function Statistics() {
   const stats = [
     { number: 1200, label: "Projects Completed", icon: "📋" },
     { number: 500, label: "Monthly Donors", icon: "❤️" },
-    { number: 1200, label: "Partners Worldwide", icon: "🌎" },
-    { number: 1400000, label: "Donations Received", icon: "💰" }
+    { number: 1200, label: "Partners Worldwide", icon: "🌎", suffix: '+' },
+    { number: 1400000, label: "Donations Received", icon: "💰", prefix: '$' }
   ];
 
   return (
@@ -70,6 +70,8 @@ function Statistics() {
             number={stat.number}
             label={stat.label}
             icon={stat.icon}
+            prefix={stat.prefix}
+            suffix={stat.suffix}
           />
         ))}
       </div>
