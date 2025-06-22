@@ -9,11 +9,11 @@ import {
   setDoc
 } from 'firebase/firestore';
 import { uploadToCloudinary } from '../../cloudinary';
+import './Dashboard.css';
 
 const Profile = () => {
   const [ngo, setNgo] = useState(null);
   const [logoURL, setLogoURL] = useState('');
-  const [descInput, setDescInput] = useState('');
   const [editMode, setEditMode] = useState(false);
   const [editedFields, setEditedFields] = useState({});
   const [showAddSection, setShowAddSection] = useState(false);
@@ -33,7 +33,6 @@ const Profile = () => {
       if (ngoSnap.exists()) {
         const data = ngoSnap.data();
         setNgo({ id: ngoSnap.id, ...data });
-        setDescInput(data.description || '');
         setEditedFields(data);
       }
 
@@ -46,12 +45,6 @@ const Profile = () => {
 
     fetchData();
   }, []);
-
-  const handleDescriptionUpdate = async () => {
-    const ngoRef = doc(db, 'NGOs', ngo.id);
-    await updateDoc(ngoRef, { description: descInput.trim() });
-    setNgo(prev => ({ ...prev, description: descInput.trim() }));
-  };
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -93,35 +86,20 @@ const Profile = () => {
     navigate('/NGOlogin');
   };
 
-  if (!ngo) return <p>Loading NGO data...</p>;
+  if (!ngo) return <div className="profile-panel"><p>Loading NGO data...</p></div>;
 
   return (
-    <div style={{
-      width: '340px',
-      minHeight: 'auto',
-      border: '1px solid #ccc',
-      borderRadius: '10px',
-      padding: '16px',
-      boxSizing: 'border-box',
-      background: '#f9f9f9',
-    }}>
-      <div style={{ textAlign: 'center' }}>
-        <label htmlFor="upload-logo" style={{ cursor: 'pointer' }}>
+    <div className="profile-panel">
+      <div className="profile-logo-container">
+        <label htmlFor="upload-logo" className="profile-logo-label">
           {logoURL ? (
             <img
               src={logoURL}
               alt="NGO Logo"
-              style={{ width: '200px', height: '200px', objectFit: 'cover', borderRadius: '10px' }}
+              className="profile-logo-img"
             />
           ) : (
-            <div style={{
-              width: '200px',
-              height: '200px',
-              backgroundColor: '#ddd',
-              display: 'inline-block',
-              borderRadius: '10px',
-              lineHeight: '200px',
-            }}>
+            <div className="profile-logo-placeholder">
               Upload Logo
             </div>
           )}
@@ -130,91 +108,129 @@ const Profile = () => {
           id="upload-logo"
           type="file"
           accept="image/*"
-          style={{ display: 'none' }}
+          className="hidden-input"
           onChange={handleImageUpload}
         />
+      </div>
 
-        <h2 style={{ marginTop: '12px' }}>
-          {editMode ? (
-            <input
-              value={editedFields.ngoName || ''}
-              onChange={(e) => handleFieldChange('ngoName', e.target.value)}
-              style={{ fontSize: '1.2em', fontWeight: 'bold', textAlign: 'center' }}
-            />
-          ) : ngo.ngoName}
-        </h2>
-
+      <div className="profile-org-name">
         {editMode ? (
-          <textarea
-            value={editedFields.description || ''}
-            onChange={(e) => handleFieldChange('description', e.target.value)}
-            placeholder="Tell us about your NGO"
-            style={{ width: '100%', height: '60px', resize: 'none' }}
+          <input
+            value={editedFields.ngoName || ''}
+            onChange={(e) => handleFieldChange('ngoName', e.target.value)}
+            className="profile-input"
+            placeholder="Organization Name"
+            style={{ textAlign: 'center', fontSize: '1.4rem', fontWeight: '700' }}
           />
-        ) : (
-          <p style={{ fontStyle: 'italic' }}>{ngo.description || 'No description provided yet.'}</p>
-        )}
+        ) : ngo.ngoName}
+      </div>
 
-        <hr style={{ margin: '16px 0' }} />
+      {ngo.description && (
+        <div className="profile-description">
+          {editMode ? (
+            <textarea
+              value={editedFields.description || ''}
+              onChange={(e) => handleFieldChange('description', e.target.value)}
+              placeholder="Tell us about your NGO"
+              className="profile-textarea"
+            />
+          ) : (
+            ngo.description
+          )}
+        </div>
+      )}
+
+      <div className="profile-details-container">
         {['city', 'state', 'phone'].map(field => (
-          <p key={field}>
-            <strong>{field.charAt(0).toUpperCase() + field.slice(1)}:</strong>{' '}
-            {editMode ? (
-              <input
-                value={editedFields[field] || ''}
-                onChange={(e) => handleFieldChange(field, e.target.value)}
-              />
-            ) : (
-              ngo[field]
-            )}
-          </p>
-        ))}
-
-        {/* Render custom fields (excluding known fields) */}
-        {Object.entries(ngo).map(([key, value]) =>
-          !excludedFields.includes(key) && (
-            <p key={key}>
-              <strong>{key}:</strong>{' '}
+          <div key={field} className="profile-detail-row">
+            <span className="profile-detail-label">
+              {field.charAt(0).toUpperCase() + field.slice(1)}
+            </span>
+            <span className="profile-detail-value">
               {editMode ? (
                 <input
-                  value={editedFields[key] || ''}
-                  onChange={(e) => handleFieldChange(key, e.target.value)}
+                  value={editedFields[field] || ''}
+                  onChange={(e) => handleFieldChange(field, e.target.value)}
+                  className="profile-input"
+                  style={{ width: '100%', padding: '0.3rem' }}
                 />
-              ) : value}
-            </p>
+              ) : (
+                ngo[field]
+              )}
+            </span>
+          </div>
+        ))}
+
+        {/* Render custom fields */}
+        {Object.entries(ngo).map(([key, value]) =>
+          !excludedFields.includes(key) && (
+            <div key={key} className="profile-detail-row">
+              <span className="profile-detail-label">{key}</span>
+              <span className="profile-detail-value">
+                {editMode ? (
+                  <input
+                    value={editedFields[key] || ''}
+                    onChange={(e) => handleFieldChange(key, e.target.value)}
+                    className="profile-input"
+                    style={{ width: '100%', padding: '0.3rem' }}
+                  />
+                ) : value}
+              </span>
+            </div>
           )
         )}
+      </div>
 
-        {/* Add Section UI */}
-        {showAddSection && (
-          <div style={{ marginTop: '20px', textAlign: 'left' }}>
-            <h4>Add a Section</h4>
-            <input
-              placeholder="Section Title (e.g. Mission)"
-              value={newField}
-              onChange={(e) => setNewField(e.target.value)}
-              style={{ width: '100%', marginBottom: 4 }}
-            />
-            <textarea
-              placeholder="Enter content"
-              value={newValue}
-              onChange={(e) => setNewValue(e.target.value)}
-              style={{ width: '100%', height: '60px', resize: 'none', marginBottom: 8 }}
-            />
-            <button onClick={handleAddSection} style={{ width: '100%' }}>
-              Add Section
-            </button>
-          </div>
-        )}
-
-        {/* Buttons */}
-        <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <button onClick={() => editMode ? handleSaveEdits() : setEditMode(true)}>
-            {editMode ? 'Save Profile' : 'Edit Profile'}
+      {/* Add Section UI */}
+      {showAddSection && (
+        <div className="add-section-container">
+          <h4>Add a Section</h4>
+          <input
+            placeholder="Section Title"
+            value={newField}
+            onChange={(e) => setNewField(e.target.value)}
+            className="profile-input"
+          />
+          <textarea
+            placeholder="Enter content"
+            value={newValue}
+            onChange={(e) => setNewValue(e.target.value)}
+            className="profile-textarea"
+            style={{ minHeight: '60px' }}
+          />
+          <button 
+            className="profile-button"
+            onClick={handleAddSection}
+          >
+            Add Section
           </button>
-          <button onClick={() => setShowAddSection(true)}>Add a Section</button>
-          <button onClick={handleLogout}>Logout</button>
         </div>
+      )}
+
+      {/* Buttons */}
+      <div>
+        <button 
+          className="profile-button" 
+          onClick={() => editMode ? handleSaveEdits() : setEditMode(true)}
+        >
+          {editMode ? 'Save Profile' : 'Edit Profile'}
+        </button>
+        
+        {!showAddSection && (
+          <button 
+            className="profile-button profile-button-outline"
+            onClick={() => setShowAddSection(true)}
+          >
+            Add a Section
+          </button>
+        )}
+        
+        <button 
+          className="profile-button profile-button-red"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
       </div>
     </div>
   );
