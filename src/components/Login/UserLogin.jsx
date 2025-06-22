@@ -114,6 +114,14 @@ const UserLogin = () => {
         <p className="login-link">
           Don't have an account? <Link to="/UserRegister">Register here</Link>
         </p>
+        <button 
+          type="submit" 
+          className="back-home"
+          disabled={loading}
+          onClick={() => navigate('/')}
+        >
+          🔙Home
+        </button>
       </form>
     </div>
   );

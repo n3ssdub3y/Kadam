@@ -110,6 +110,14 @@ const NGORegister = () => {
           Already have an account? 
           <Link to="/NGOlogin"> Login here</Link>
         </p>
+        <button 
+          type="submit" 
+          className="back-home"
+          disabled={loading}
+          onClick={() => navigate('/')}
+        >
+          🔙Home
+        </button>
       </form>
     </div>
   );

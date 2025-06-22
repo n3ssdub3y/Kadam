@@ -107,6 +107,15 @@ const Login = () => {
         <p className="login-link">
           Don't have an account? <Link to="/NGOregister">Register here</Link>
         </p>
+
+        <button 
+          type="submit" 
+          className="back-home"
+          disabled={loading}
+          onClick={() => navigate('/')}
+        >
+          🔙Home
+        </button>
       </form>
     </div>
   );
