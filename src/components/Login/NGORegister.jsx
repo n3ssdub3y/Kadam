@@ -1,5 +1,3 @@
-// this is NGORegister.jsx
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../../firebaseConfig';

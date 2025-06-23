@@ -1,5 +1,3 @@
-// this is NGOLogin.jsx
-
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { db } from '../../firebaseConfig';

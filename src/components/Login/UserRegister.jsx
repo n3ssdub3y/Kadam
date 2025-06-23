@@ -1,3 +1,5 @@
+// this is UserRegister.jsx
+
 import React, { useState } from 'react';
 import { auth, db } from '../../firebaseConfig';
 import {
@@ -36,6 +38,9 @@ const UserRegister = () => {
         email:     email.trim(),
         createdAt: Date.now()
       });
+      
+      localStorage.setItem('userId', docId);
+
       navigate('/dashboard');
     } catch (err) {
       console.error(err);
@@ -58,6 +63,9 @@ const UserRegister = () => {
         photoURL:  user.photoURL,
         createdAt: Date.now()
       }, { merge: true });
+
+      localStorage.setItem('userId', docId);
+
       navigate('/dashboard');
     } catch (err) {
       console.error(err);

@@ -1,3 +1,5 @@
+// this is UserLogin.jsx
+
 import React, { useState } from 'react';
 import { auth } from '../../firebaseConfig';
 import {
@@ -27,6 +29,16 @@ const UserLogin = () => {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
+
+     // look up doc by uid
+     const { uid } = auth.currentUser;
+     const usersRef = collection(db, 'Users');
+     const q = query(usersRef, where('uid','==',uid));
+     const snap = await getDocs(q);
+     if (!snap.empty) {
+       localStorage.setItem('userId', snap.docs[0].id);
+     }
+
       navigate('/dashboard');
     } catch (err) {
       console.error(err);
@@ -39,7 +51,13 @@ const UserLogin = () => {
   const handleGoogleLogin = async () => {
     setLoading(true);
     try {
-      await signInWithPopup(auth, provider);
+      
+     const result = await signInWithPopup(auth, provider);
+     const user = result.user;
+     // assume doc already exists under displayName or uid
+     const docId = user.displayName?.trim() || user.uid;
+     localStorage.setItem('userId', docId);
+
       navigate('/dashboard');
     } catch (err) {
       console.error(err);
