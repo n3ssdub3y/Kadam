@@ -100,6 +100,14 @@ const UserProfile = () => {
   return (
     <div className="profile-panel">
       <div className="profile-logo-container">
+        
+        <button 
+          className="edit-button-mini" 
+          onClick={() => editMode ? saveProfile() : setEditMode(true)}
+        >
+          {editMode ? '💾' : '✏️'}
+        </button>
+
         <label htmlFor="upload-pic" className="profile-logo-label">
           {logoURL
             ? <img 
@@ -198,12 +206,6 @@ const UserProfile = () => {
 
       {/* Action buttons */}
       <div>
-        <button 
-          className="profile-button" 
-          onClick={() => editMode ? saveProfile() : setEditMode(true)}
-        >
-          {editMode ? 'Save Profile' : 'Edit Profile'}
-        </button>
         
         {!showAdd && (
           <button 
