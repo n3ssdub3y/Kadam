@@ -1,0 +1,166 @@
+/* LinkedInHome.css */
+.linkedin-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f3f6f8;
+  min-height: 100vh;
+}
+
+.linkedin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 2rem;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo a {
+  color: #0a66c2;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.main-nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.main-nav a {
+  color: #666;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.main-nav a:hover {
+  color: #0a66c2;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.profile-pic {
+  border-radius: 50%;
+}
+
+.linkedin-content {
+  display: flex;
+  max-width: 1200px;
+  margin: 1rem auto;
+  gap: 1.5rem;
+}
+
+.left-sidebar, .right-sidebar {
+  width: 25%;
+}
+
+.main-feed {
+  width: 50%;
+}
+
+.profile-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.profile-bg {
+  height: 60px;
+  background-color: #0a66c2;
+  margin: -1rem -1rem 0 -1rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.profile-img {
+  border-radius: 50%;
+  border: 2px solid white;
+  margin-top: -40px;
+}
+
+.connections {
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.connection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.post-creator {
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.post-creator input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 2rem;
+}
+
+.post {
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.post-header {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.post-header img {
+  border-radius: 50%;
+}
+
+.post-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1rem;
+}
+
+.post-actions button {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+}
+
+.news-card, .ad-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.news-card ul {
+  padding-left: 1rem;
+}
+
+.news-card li {
+  margin: 0.5rem 0;
+}

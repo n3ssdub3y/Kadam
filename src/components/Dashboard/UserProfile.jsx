@@ -92,6 +92,9 @@ const UserProfile = () => {
     navigate('/UserLogin');
   };
 
+  const goto=()=>{
+    navigate('/LinkedInHome')
+  }
   if (!user) return <div className="profile-panel"><p>Loading user profile…</p></div>;
 
   return (
@@ -217,6 +220,7 @@ const UserProfile = () => {
         >
           Logout
         </button>
+        <button  className="profile-button profile-button-red" onClick={goto}>GO</button>
       </div>
     </div>
   );
