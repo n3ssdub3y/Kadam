@@ -32,6 +32,7 @@ const UserRegister = () => {
     try {
       const userCred = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(userCred.user, { displayName: username });
+      const docId = username.trim();
       await setDoc(doc(db, 'Users', username.trim()), {
         uid:       userCred.user.uid,
         username:  username.trim(),
