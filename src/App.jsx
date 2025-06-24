@@ -12,7 +12,7 @@ import UserLogin from "./components/Login/UserLogin";
 import Navbar from "./components/Landing Page/Navbar";
 import AboutUs from "./components/Landing Page/AboutUs";
 import Dashboard from "./components/Dashboard/Dashboard";
-import LinkedInHome from "./components/link/LinkedInHome";
+// import LinkedInHome from "./components/link/LinkedInHome";
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
 
         <Route path="/about" element={<AboutUs />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/LinkedInHome" element={<LinkedInHome />} />
+        {/* <Route path="/LinkedInHome" element={<LinkedInHome />} /> */}
       </Routes>
     </Router>
   );

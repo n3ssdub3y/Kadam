@@ -1,37 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { db } from '../../firebaseConfig';
-import { doc, getDoc, updateDoc, collection, setDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
 import { uploadToCloudinary } from '../../cloudinary';
-import './Dashboard.css'; // We'll update this CSS
+import './Dashboard.css';
 
 const LinkedInProfileDashboard = () => {
-  // LinkedIn components state
-  const [posts, setPosts] = useState([
+  // Mock data for posts
+  const [posts] = useState([
     {
       id: 1,
-      author: 'John Doe',
-      title: 'Software Engineer at Tech Corp',
-      content: 'Just published a new article about React performance optimization techniques!',
-      likes: 42,
-      comments: 5,
-      time: '2h ago'
+      author: 'Women Empowerment Network',
+      title: 'Nonprofit Organization',
+      content: 'Join our webinar this Friday about financial literacy for women entrepreneurs! #Empowerment #Finance',
+      likes: 24,
+      comments: 7,
+      time: '3h ago'
     },
     {
       id: 2,
-      author: 'Jane Smith',
-      title: 'Product Manager at Design Inc',
-      content: 'Excited to announce our new product launch next week! #productmanagement #launch',
-      likes: 89,
+      author: 'Digital Skills Initiative',
+      title: 'Education Nonprofit',
+      content: 'We just launched our new mobile app to teach digital skills to women in rural areas! Check it out at digitalskills.org/app',
+      likes: 56,
       comments: 12,
-      time: '4h ago'
+      time: '1d ago'
     }
   ]);
 
-  const [connections, setConnections] = useState([
-    { name: 'Alex Johnson', title: 'UX Designer' },
-    { name: 'Sarah Williams', title: 'Marketing Specialist' },
-    { name: 'Michael Brown', title: 'Data Scientist' }
+  const [connections] = useState([
+    { name: 'Financial Inclusion Group', title: '501 members' },
+    { name: 'Women Entrepreneurs', title: '2.3k members' },
+    { name: 'Digital Literacy Advocates', title: '890 members' }
   ]);
 
   // Profile state
@@ -109,58 +109,73 @@ const LinkedInProfileDashboard = () => {
     navigate('/NGOlogin');
   };
 
-  if (!ngo) return <div className="linkedin-container"><p>Loading NGO data...</p></div>;
+  if (!ngo) return <div className="loading-container">Loading NGO data...</div>;
 
   return (
     <div className="linkedin-container">
-      {/* Header - LinkedIn Style */}
+      {/* Header */}
       <header className="linkedin-header">
-        <div className="logo">
-          <Link to="/">Kadam</Link>
-        </div>
-        <nav className="main-nav">
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/network">My Network</Link>
-          <Link to="/opportunities">Opportunities</Link>
-          <Link to="/messaging">Messaging</Link>
-          <Link to="/notifications">Notifications</Link>
-        </nav>
-        <div className="user-menu" onClick={() => navigate('/profile')}>
-          {logoURL ? (
-            <img src={logoURL} 
-            alt="Profile"
-             className="profile-pic-small" />
-          ) : (
-            <div className="profile-pic-placeholder-small">
-              {ngo.ngoName.charAt(0)}
-            </div>
-          )}
-          <span>{ngo.ngoName}</span>
+        <div className="header-content">
+          <div className="logo">
+            <Link to="/">Kadam 👣</Link>
+          </div>
+          <nav className="main-nav">
+            <Link to="/dashboard" className="nav-item">
+              <i className="icon feed-icon"></i>
+              <span>Feed</span>
+            </Link>
+            <Link to="/network" className="nav-item">
+              <i className="icon network-icon"></i>
+              <span>My Network</span>
+            </Link>
+            <Link to="/opportunities" className="nav-item">
+              <i className="icon jobs-icon"></i>
+              <span>Opportunities</span>
+            </Link>
+            <Link to="/messaging" className="nav-item">
+              <i className="icon messaging-icon"></i>
+              <span>Messaging</span>
+            </Link>
+            <Link to="/notifications" className="nav-item">
+              <i className="icon notifications-icon"></i>
+              <span>Notifications</span>
+            </Link>
+          </nav>
+          <div className="user-menu" onClick={() => navigate('/profile')}>
+            {logoURL ? (
+              <img src={logoURL} alt="Profile" className="profile-pic-small" />
+            ) : (
+              <div className="profile-pic-placeholder-small">
+                {ngo.ngoName.charAt(0)}
+              </div>
+            )}
+            <span>Me <i className="dropdown-icon"></i></span>
+          </div>
         </div>
       </header>
 
       {/* Main Content */}
       <div className="linkedin-content">
-        {/* Left Sidebar - Profile Section */}
+        {/* Left Sidebar */}
         <aside className="left-sidebar">
           <div className="profile-card">
             <div className="profile-bg"></div>
             <label htmlFor="upload-logo" className="profile-logo-label">
               {logoURL ? (
-                <img src={logoURL} 
-                alt="NGO Logo" 
-                className="profile-img-medium" />
+                <img src={logoURL} alt="NGO Logo" className="profile-img-medium" />
               ) : (
-                <div className="profile-img-placeholder-medium">Upload Logo</div>
+                <div className="profile-img-placeholder-medium">
+                  {ngo.ngoName.charAt(0)}
+                </div>
               )}
             </label>
-            {/* <input
+            <input
               id="upload-logo"
               type="file"
               accept="image/*"
               className="hidden-input"
               onChange={handleImageUpload}
-            /> */}
+            />
             
             <h3>
               {editMode ? (
@@ -299,61 +314,129 @@ const LinkedInProfileDashboard = () => {
           </div>
         </aside>
 
-        {/* Main Feed - Organization Updates */}
+        {/* Main Feed */}
         <main className="main-feed">
           <div className="post-creator">
-            
+            <img 
+              src={logoURL || 'https://via.placeholder.com/50'} 
+              alt="Organization" 
+              className="post-creator-img"
+            />
             <input 
               type="text" 
               placeholder="Share an update about your organization..." 
+              className="post-input"
             />
+            <div className="post-options">
+              <button className="post-option">
+                <i className="icon photo-icon"></i> Photo
+              </button>
+              <button className="post-option">
+                <i className="icon video-icon"></i> Video
+              </button>
+              <button className="post-option">
+                <i className="icon event-icon"></i> Event
+              </button>
+              <button className="post-option">
+                <i className="icon article-icon"></i> Article
+              </button>
+            </div>
           </div>
 
           {posts.map(post => (
             <div key={post.id} className="post">
               <div className="post-header">
-                <img src="https://via.placeholder.com/50" alt={post.author} />
-                <div>
+                <img src={logoURL || 'https://via.placeholder.com/50'} alt={post.author} className="post-author-img" />
+                <div className="post-author-info">
                   <h4>{post.author}</h4>
                   <p>{post.title}</p>
                   <small>{post.time}</small>
                 </div>
+                <button className="post-menu">
+                  <i className="icon more-icon"></i>
+                </button>
               </div>
               <div className="post-content">
                 <p>{post.content}</p>
               </div>
+              <div className="post-stats">
+                <span>{post.likes} likes</span>
+                <span>{post.comments} comments</span>
+              </div>
               <div className="post-actions">
-                <button>Like ({post.likes})</button>
-                <button>Comment ({post.comments})</button>
-                <button>Share</button>
+                <button className="post-action">
+                  <i className="icon like-icon"></i> Like
+                </button>
+                <button className="post-action">
+                  <i className="icon comment-icon"></i> Comment
+                </button>
+                <button className="post-action">
+                  <i className="icon share-icon"></i> Share
+                </button>
+                <button className="post-action">
+                  <i className="icon send-icon"></i> Send
+                </button>
               </div>
             </div>
           ))}
         </main>
 
-        {/* Right Sidebar - Connections/Resources */}
+        {/* Right Sidebar */}
         <aside className="right-sidebar">
           <div className="connections-card">
-            <h4>Your Network</h4>
+            <div className="card-header">
+              <h4>Your Network</h4>
+              <button className="card-menu">
+                <i className="icon more-icon"></i>
+              </button>
+            </div>
             {connections.map((conn, index) => (
               <div key={index} className="connection">
-                <img src="https://via.placeholder.com/40" alt={conn.name} />
-                <div>
-                  <p>{conn.name}</p>
-                  <small>{conn.title}</small>
+                <img src="https://via.placeholder.com/40" alt={conn.name} className="connection-img" />
+                <div className="connection-info">
+                  <p className="connection-name">{conn.name}</p>
+                  <small className="connection-title">{conn.title}</small>
                 </div>
+                <button className="connection-action">
+                  <i className="icon connect-icon"></i>
+                </button>
               </div>
             ))}
             <button className="view-all-btn">View all</button>
           </div>
           
           <div className="resources-card">
-            <h4>Resources</h4>
-            <ul>
-              <li><a href="#">Funding Opportunities</a></li>
-              <li><a href="#">Capacity Building</a></li>
-              <li><a href="#">Volunteer Management</a></li>
+            <div className="card-header">
+              <h4>Resources</h4>
+            </div>
+            <ul className="resources-list">
+              <li>
+                <a href="#" className="resource-link">
+                  <i className="icon funding-icon"></i>
+                  <span>Funding Opportunities</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" className="resource-link">
+                  <i className="icon capacity-icon"></i>
+                  <span>Capacity Building</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" className="resource-link">
+                  <i className="icon volunteer-icon"></i>
+                  <span>Volunteer Management</span>
+                </a>
+              </li>
             </ul>
+          </div>
+
+          <div className="ad-card">
+            <p className="ad-label">Advertisement</p>
+            <div className="ad-content">
+              <p>Empower your organization with our premium tools</p>
+              <button className="ad-button">Learn More</button>
+            </div>
           </div>
         </aside>
       </div>
