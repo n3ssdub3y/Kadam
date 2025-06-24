@@ -9,7 +9,7 @@ import {
   setDoc
 } from 'firebase/firestore';
 import { uploadToCloudinary } from '../../cloudinary';
-import './Dashboard.css';
+import './Profile.css';
 
 const Profile = () => {
   const [ngo, setNgo] = useState(null);
@@ -91,6 +91,14 @@ const Profile = () => {
   return (
     <div className="profile-panel">
       <div className="profile-logo-container">
+
+        <button 
+          className="edit-button-mini" 
+          onClick={() => editMode ? saveProfile() : setEditMode(true)}
+        >
+          {editMode ? '💾' : '✏️'}
+        </button>
+
         <label htmlFor="upload-logo" className="profile-logo-label">
           {logoURL ? (
             <img
@@ -209,13 +217,6 @@ const Profile = () => {
 
       {/* Buttons */}
       <div>
-        <button 
-          className="profile-button" 
-          onClick={() => editMode ? handleSaveEdits() : setEditMode(true)}
-        >
-          {editMode ? 'Save Profile' : 'Edit Profile'}
-        </button>
-        
         {!showAddSection && (
           <button 
             className="profile-button profile-button-outline"

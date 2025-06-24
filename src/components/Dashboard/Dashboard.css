@@ -27,7 +27,7 @@ body {
 }
 
 /* ===== Header Styles ===== */
-.linkedin-header {
+.Kadam-header {
   background-color: white;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   position: sticky;
@@ -127,7 +127,7 @@ body {
 }
 
 /* ===== Main Content Layout ===== */
-.linkedin-content {
+.Kadam-content {
   display: flex;
   max-width: 1200px;
   margin: 1.5rem auto;
@@ -682,7 +682,7 @@ body {
 
 /* ===== Responsive Adjustments ===== */
 @media (max-width: 992px) {
-  .linkedin-content {
+  .Kadam-content {
     flex-direction: column;
   }
   

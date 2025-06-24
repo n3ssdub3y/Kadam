@@ -8,7 +8,7 @@ import {
   setDoc
 } from 'firebase/firestore';
 import { uploadToCloudinary }    from '../../cloudinary';
-import './Dashboard.css'; // Import the same CSS file
+import './Profile.css'; // Import the same CSS file
 
 const UserProfile = () => {
   const [user, setUser]           = useState(null);
@@ -93,9 +93,9 @@ const UserProfile = () => {
   };
 
   const goto=()=>{
-    navigate('/LinkedInHome')
+    navigate('/KadamHome')
   }
-  if (!user) return <div className="profile-panel"><p>Loading user profile…</p></div>;
+  if (!user) return <div className="profile-panel"><p>Loading user data…</p></div>;
 
   return (
     <div className="profile-panel">
@@ -204,9 +204,8 @@ const UserProfile = () => {
         </div>
       )}
 
-      {/* Action buttons */}
+      {/* Buttons */}
       <div>
-        
         {!showAdd && (
           <button 
             className="profile-button profile-button-outline"
@@ -222,7 +221,6 @@ const UserProfile = () => {
         >
           Logout
         </button>
-        <button  className="profile-button profile-button-red" onClick={goto}>GO</button>
       </div>
     </div>
   );

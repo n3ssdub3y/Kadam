@@ -52,7 +52,7 @@ const Home = () => {
               <p className="hero-button-label">ARE YOU A</p>
               <button
                 className="hero-button animate-fade-in"
-                onClick={() => navigate('/UserRegister')}
+                onClick={() => navigate('/UserLogin')}
               >
                 VIEWER
               </button>
@@ -62,7 +62,7 @@ const Home = () => {
               <p className="hero-button-label">OR AN</p>
               <button
                 className="hero-button animate-fade-in"
-                onClick={() => navigate('/NGORegister')}
+                onClick={() => navigate('/NGOLogin')}
               >
                 NGO
               </button>
