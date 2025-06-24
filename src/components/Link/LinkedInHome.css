@@ -46,9 +46,7 @@
   cursor: pointer;
 }
 
-.profile-pic {
-  border-radius: 50%;
-}
+
 
 .linkedin-content {
   display: flex;
@@ -81,11 +79,6 @@
   border-radius: 0.5rem 0.5rem 0 0;
 }
 
-.profile-img {
-  border-radius: 50%;
-  border: 2px solid white;
-  margin-top: -40px;
-}
 
 .connections {
   background-color: white;
@@ -163,4 +156,59 @@
 
 .news-card li {
   margin: 0.5rem 0;
+}
+
+/* Profile Picture Sizes */
+.profile-pic-small {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-pic-placeholder-small {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #0a66c2;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.profile-img-medium {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid white;
+  margin-top: -40px;
+}
+
+.profile-img-placeholder-medium {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid white;
+  margin-top: -40px;
+  cursor: pointer;
+}
+
+/* Adjust header profile section */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.user-menu span {
+  font-size: 0.9rem;
+  font-weight: 600;
 }
