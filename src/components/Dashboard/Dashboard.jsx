@@ -4,16 +4,17 @@ import { db } from '../../firebaseConfig';
 import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
 import { uploadToCloudinary } from '../../cloudinary';
 import './Dashboard.css';
+import Navbar from './Navbar';
+import Feed from './Feed';
+import Sidebar from './Sidebar';
 import NGOProfile from './NGOProfile'
 import UserProfile from './UserProfile'
-import Navbar from './Navbar';
-import Sidebar from './Sidebar'
-import Feed from './Feed'
 import './Dashboard.css'
 
 const Dashboard = () => {
   const ngoId  = localStorage.getItem('ngoId');
   const userId = localStorage.getItem('userId');
+
 
   return (
     <div className="Kadam-container">
@@ -23,16 +24,19 @@ const Dashboard = () => {
       {/* Main Content */}
       <div className="Kadam-content">
         {/* Left Sidebar */}
-      {ngoId && <NGOProfile />}
-      {userId && <UserProfile />}
+        <div className="left-sidebar">
+          {ngoId && <NGOProfile />}
+          {userId && <UserProfile />}
+        </div>
 
 
         {/* Main Feed */}
           <Feed></Feed>
 
         {/* Right Sidebar */}
-          <Sidebar></Sidebar>
-      </div>
+         <Sidebar></Sidebar>   
+        
+        </div>
     </div>
   );
 };

@@ -8,7 +8,7 @@ import {
   setDoc
 } from 'firebase/firestore';
 import { uploadToCloudinary }    from '../../cloudinary';
-import './Profile.css'; // Import the same CSS file
+import './Dashboard.css'; // Import the same CSS file
 
 const UserProfile = () => {
   const [user, setUser]           = useState(null);

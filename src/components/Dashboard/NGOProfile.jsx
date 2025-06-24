@@ -9,7 +9,7 @@ import {
   setDoc
 } from 'firebase/firestore';
 import { uploadToCloudinary } from '../../cloudinary';
-import './Profile.css';
+import './Dashboard.css';
 
 const Profile = () => {
   const [ngo, setNgo] = useState(null);
