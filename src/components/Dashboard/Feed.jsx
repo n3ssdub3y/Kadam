@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { db } from '../../firebaseConfig';
 import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
 import { uploadToCloudinary } from '../../cloudinary';
+import Post from './Post';
 import './Dashboard.css';
 
 function Feed() {
@@ -29,33 +30,8 @@ function Feed() {
       ]);
     return(
         <>
-                <main className="main-feed">
-          <div className="post-creator">
-            <img 
-              src={logoURL || 'https://via.placeholder.com/50'} 
-              alt="Organization" 
-              className="post-creator-img"
-            />
-            <input 
-              type="text" 
-              placeholder="Share an update about your organization..." 
-              className="post-input"
-            />
-            <div className="post-options">
-              <button className="post-option">
-                <i className="icon photo-icon"></i> Photo
-              </button>
-              <button className="post-option">
-                <i className="icon video-icon"></i> Video
-              </button>
-              <button className="post-option">
-                <i className="icon event-icon"></i> Event
-              </button>
-              <button className="post-option">
-                <i className="icon article-icon"></i> Article
-              </button>
-            </div>
-          </div>
+          <main className="main-feed">
+          <Post></Post>
 
           {posts.map(post => (
             <div key={post.id} className="post">
@@ -79,16 +55,16 @@ function Feed() {
               </div>
               <div className="post-actions">
                 <button className="post-action">
-                  <i className="icon like-icon"></i> Like
+                  ❤️ Like
                 </button>
                 <button className="post-action">
-                  <i className="icon comment-icon"></i> Comment
+                  🗨️ Comment
                 </button>
                 <button className="post-action">
-                  <i className="icon share-icon"></i> Share
+                  📤 Share
                 </button>
                 <button className="post-action">
-                  <i className="icon send-icon"></i> Send
+                  🫱🏻‍🫲🏻 Collborate
                 </button>
               </div>
             </div>
