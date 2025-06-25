@@ -64,7 +64,7 @@ function Feed() {
                   📤 Share
                 </button>
                 <button className="post-action">
-                  🫱🏻‍🫲🏻 Collborate
+                  🫱🏻‍🫲🏻 Collaborate
                 </button>
               </div>
             </div>

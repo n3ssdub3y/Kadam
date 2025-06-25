@@ -700,7 +700,6 @@ margin-right: 30%;
 .like-icon { mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'); }
 .comment-icon { mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24"><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18z"/></svg>'); }
 .share-icon { mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24"><path d="M18 16.08a2.91 2.91 0 0 0-1.96.77L8.91 12.7a3.27 3.27 0 0 0 0-1.4l7.05-4.11a3 3 0 1 0-1.04-1.78L7.87 9.6a3 3 0 1 0 0 4.73l7.12 4.16a3 3 0 1 0 3.01-4.41z"/></svg>'); }
-.send-icon { mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>'); }
 
 /* ===== Sidebar Styles ===== */
 .right-sidebar {

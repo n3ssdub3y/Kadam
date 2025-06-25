@@ -1,67 +1,64 @@
-// components/messaging/MessageList.jsx
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { db } from '../../firebaseConfig';
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import "./Messaging.css";
 
 export default function MessageList({ selectedUser }) {
   const [messages, setMessages] = useState([]);
   const auth = getAuth();
   const currentUser = auth.currentUser;
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    // Ensure both current user and selected user are available
-    if (!selectedUser || !currentUser?.uid) {
-      console.warn("⏳ Waiting for selectedUser and currentUser...");
-      return;
-    }
+    if (!selectedUser || !currentUser?.uid) return;
 
-    // Use uid consistently for chatId
     const receiverId = selectedUser.uid || selectedUser.id;
     const chatId = [currentUser.uid, receiverId].sort().join("_");
 
-    console.log("📨 Listening to chat:", chatId);
-
-    // Create Firestore query for messages
     const q = query(collection(db, "chats", chatId, "messages"), orderBy("timestamp"));
-
     const unsub = onSnapshot(q, (snapshot) => {
       const msgs = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      console.log("📥 Messages fetched:", msgs);
       setMessages(msgs);
     });
 
     return () => unsub();
   }, [selectedUser, currentUser]);
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const formatTime = (timestamp) => {
+    if (!timestamp) return "";
+    const date = timestamp.toDate();
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
   return (
-    <div style={{ flex: 1, overflowY: "auto", margin: "1rem 0", padding: "0.5rem" }}>
+    <div className="message-list">
       {messages.length === 0 ? (
-        <p style={{ textAlign: "center", color: "gray" }}>No messages yet.</p>
+        <div className="no-messages">
+          <p>No messages yet. Start the conversation!</p>
+        </div>
       ) : (
         messages.map((msg) => (
           <div
             key={msg.id}
-            style={{
-              textAlign: msg.senderId === currentUser.uid ? "right" : "left",
-              marginBottom: "10px",
-            }}
+            className={`message-container ${msg.senderId === currentUser.uid ? "sent" : "received"}`}
           >
-            <span
-              style={{
-                background: msg.senderId === currentUser.uid ? "#dcf8c6" : "#f1f0f0",
-                padding: "8px 12px",
-                borderRadius: "18px",
-                display: "inline-block",
-                maxWidth: "60%",
-              }}
-            >
-              {msg.text}
-            </span>
+            <div className="message-content">
+              <div className="message-text">{msg.text}</div>
+              <div className="message-time">{formatTime(msg.timestamp)}</div>
+            </div>
           </div>
         ))
       )}
+      <div ref={messagesEndRef} />
     </div>
   );
 }

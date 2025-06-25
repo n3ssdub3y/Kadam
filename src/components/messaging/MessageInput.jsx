@@ -1,18 +1,18 @@
-// components/messaging/MessageInput.jsx
 import React, { useState } from "react";
 import { db } from '../../firebaseConfig';
 import { getAuth } from "firebase/auth";
 import { doc, setDoc, addDoc, collection, serverTimestamp } from "firebase/firestore";
+import "./Messaging.css";
 
 export default function MessageInput({ selectedUser }) {
   const [text, setText] = useState("");
   const auth = getAuth();
   const senderId = auth.currentUser.uid;
   const receiverId = selectedUser.uid || selectedUser.id;
-
   const chatId = [senderId, receiverId].sort().join("_");
 
-  const sendMessage = async () => {
+  const sendMessage = async (e) => {
+    e.preventDefault();
     if (!text.trim()) return;
 
     await setDoc(
@@ -35,17 +35,20 @@ export default function MessageInput({ selectedUser }) {
   };
 
   return (
-    <div style={{ display: "flex", padding: "0.5rem", borderTop: "1px solid #ccc" }}>
-      <input
-        type="text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Write a message..."
-        style={{ flex: 1, padding: "0.5rem" }}
-      />
-      <button onClick={sendMessage} style={{ marginLeft: "0.5rem" }}>
-        Send
+    <form className="message-input" onSubmit={sendMessage}>
+      <div className="input-container">
+        <button type="button" className="attachment-button">📎</button>
+        <input
+          type="text"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Write a message..."
+        />
+      </div>
+      <button type="submit" className="send-button">
+        <span>Send</span>
+        <span className="send-icon"> ➤</span>
       </button>
-    </div>
+    </form>
   );
 }
