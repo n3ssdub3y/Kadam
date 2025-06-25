@@ -12,6 +12,8 @@ import UserLogin from "./components/Login/UserLogin";
 import Navbar from "./components/Landing Page/Navbar";
 import AboutUs from "./components/Landing Page/AboutUs";
 import Dashboard from "./components/Dashboard/Dashboard";
+import MessagingPage from './components/messaging/MessagingPage';
+
 // import KadamHome from "./components/link/KadamHome";
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
 
         <Route path="/about" element={<AboutUs />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/messaging" element={<MessagingPage />} />
+
         {/* <Route path="/KadamHome" element={<KadamHome />} /> */}
       </Routes>
     </Router>
