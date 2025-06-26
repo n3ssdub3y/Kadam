@@ -222,6 +222,7 @@
 }
 
 .message-container {
+  position: relative;
   max-width: 70%;
   margin-bottom: 1.2rem;
   display: flex;
@@ -375,4 +376,31 @@
 .empty-state p {
   color: var(--text-gray);
   font-size: 1rem;
+}
+.delete-container {
+  position: absolute;
+  top: calc(100% + 0.25rem);  /* 0.25rem below the bottom of the bubble */
+  right: 0.5rem;              /* adjust left/right as desired */
+  display: flex;
+  gap: 0.25rem;
+}
+.delete-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+.confirm-delete {
+  background-color: red;
+  color: white;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.8rem;
+}
+.cancel-delete {
+  background-color: gray;
+  color: white;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.8rem;
 }
