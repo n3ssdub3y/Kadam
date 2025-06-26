@@ -30,9 +30,12 @@ export default function UserList({ onSelectUser }) {
     const unsubscribe = onSnapshot(
       collection(db, "Users"),
       async (snapshot) => {
-        // Exclude current user by matching doc.id to currentUser.uid
+        // Exclude current user by matching doc data's uid or doc.id
         const fetched = snapshot.docs
-          .filter((docSnap) => docSnap.id !== currentUser.uid)
+          .filter((docSnap) => {
+            const data = docSnap.data();
+            return data.uid !== currentUser.uid && docSnap.id !== currentUser.uid;
+          })
           .map((docSnap) => ({ id: docSnap.id, ...docSnap.data() }));
 
         // Fetch profile pics for each user
