@@ -15,7 +15,6 @@ export default function UserList({ onSelectUser }) {
   const [searchTerm, setSearchTerm] = useState("");
   const auth = getAuth();
 
-  // Track auth state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) setCurrentUser(user);
@@ -23,51 +22,63 @@ export default function UserList({ onSelectUser }) {
     return unsubscribe;
   }, [auth]);
 
-  // Listen to Users collection and fetch nested profile pics, excluding self
-  useEffect(() => {
-    if (!currentUser) return;
+ useEffect(() => {
+  if (!currentUser) return;
 
-    const unsubscribe = onSnapshot(
-      collection(db, "Users"),
-      async (snapshot) => {
-        // Exclude current user by matching doc data's uid or doc.id
-        const fetched = snapshot.docs
-          .filter((docSnap) => {
-            const data = docSnap.data();
-            return data.uid !== currentUser.uid && docSnap.id !== currentUser.uid;
-          })
-          .map((docSnap) => ({ id: docSnap.id, ...docSnap.data() }));
-
-        // Fetch profile pics for each user
-        const withPics = await Promise.all(
-          fetched.map(async (user) => {
-            try {
-              const profileRef = firestoreDoc(
-                db,
-                "Users",
-                user.id,
-                "pics",
-                "profile"
-              );
-              const profileSnap = await getDoc(profileRef);
-              if (profileSnap.exists()) {
-                user.photoURL = profileSnap.data().logoURL;
-              }
-            } catch (err) {
-              console.error(`Error fetching pic for ${user.id}:`, err);
-            }
-            return user;
-          })
-        );
-
-        setUsers(withPics);
-      }
+  const unsubscribe = onSnapshot(collection(db, "Users"), async (snapshot) => {
+    const userDocs = snapshot.docs.filter(
+      (docSnap) => docSnap.data().uid !== currentUser.uid
     );
 
-    return unsubscribe;
-  }, [currentUser]);
+    const userPromises = userDocs.map(async (docSnap) => {
+      const userData = docSnap.data();
+      const user = { id: docSnap.id, ...userData };
 
-  // Filter based on search term
+      // ✅ Use correct UID for chat ID
+      const chatId = [currentUser.uid, user.uid].sort().join("_");
+      const chatRef = firestoreDoc(db, "chats", chatId);
+
+      try {
+        // ✅ Profile picture
+        const profileRef = firestoreDoc(db, "Users", user.id, "pics", "profile");
+        const profileSnap = await getDoc(profileRef);
+        if (profileSnap.exists()) {
+          user.photoURL = profileSnap.data().logoURL;
+        }
+
+        // ✅ Chat metadata
+        const chatSnap = await getDoc(chatRef);
+        if (chatSnap.exists()) {
+          const chatData = chatSnap.data();
+          user.updatedAt = chatData.updatedAt?.toMillis?.() || 0;
+          user.unread = chatData.unreadCounts?.[currentUser.uid] || 0;
+        } else {
+          user.updatedAt = 0;
+          user.unread = 0;
+        }
+
+      } catch (error) {
+        console.error("Error fetching user/chat info:", error);
+        user.updatedAt = 0;
+        user.unread = 0;
+      }
+
+      return user;
+    });
+
+    // ✅ Wait for all users
+    const userList = await Promise.all(userPromises);
+
+    // ✅ Now sort by updatedAt DESCENDING (recent first)
+    const sortedList = userList.sort((a, b) => b.updatedAt - a.updatedAt);
+
+    setUsers(sortedList); // ✅ Ensure sorted list is used in UI
+  });
+
+  return unsubscribe;
+}, [currentUser]);
+
+
   const filteredUsers = users.filter((user) =>
     user.username?.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -103,17 +114,15 @@ export default function UserList({ onSelectUser }) {
                 {user.photoURL ? (
                   <img src={user.photoURL} alt={user.username} />
                 ) : (
-                  <span>
-                    {user.username?.charAt(0).toUpperCase()}
-                  </span>
+                  <span>{user.username?.charAt(0).toUpperCase()}</span>
                 )}
               </div>
               <div className="user-info">
-                <div className="user-name">
+                <div className="user-name" style={{ fontWeight: user.unread > 0 ? "bold" : "normal" }}>
                   @{user.username || "Unknown"}
                 </div>
               </div>
-              {user.unread && (
+              {user.unread > 0 && (
                 <span className="unread-badge">{user.unread}</span>
               )}
             </div>
