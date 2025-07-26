@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../../firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
-import './Register.css'; // Import the CSS file
-import { Link } from 'react-router-dom'; // Import Link for navigation
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import './Register.css';
+import { Link } from 'react-router-dom';
 
 const NGORegister = () => {
-    const navigate = useNavigate();
-  
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     ngoName: '',
@@ -22,43 +22,58 @@ const NGORegister = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, ngoName, email, password, phone, city, state, year } = formData;
+
     if (!name || !ngoName || !email || !password || !phone || !city || !state || !year) {
       return alert('All fields are required');
     }
 
     setLoading(true);
+    const auth = getAuth();
+
     try {
-      const id = ngoName.trim();
-      await setDoc(
-        doc(db, 'NGOs', id),
-        {
-          id, // <- store the ID too
-          name:        String(name).trim(),
-          ngoName:     id,
-          email:       String(email).trim(),
-          password:    String(password),
-          phone:       String(phone).trim(),
-          city:        String(city).trim(),
-          state:       String(state).trim(),
-          year:        Number(year)
-        }
-      );
+      // 1. Create Firebase Auth user
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
 
-      // remember who just registered, so Profile.jsx can fetch them
-      localStorage.setItem('ngoId', id);
+      // 2. Save NGO details to Firestore (linked by email or uid)
+      const ngoDocId = ngoName.trim(); // or use user.uid for better uniqueness
+      await setDoc(doc(db, 'NGOs', ngoDocId), {
+        id: ngoDocId,
+        uid: user.uid,
+        name: name.trim(),
+        ngoName: ngoDocId,
+        email: email.trim(),
+        phone: phone.trim(),
+        city: city.trim(),
+        state: state.trim(),
+        year: Number(year)
+        // ❌ Do NOT store password here
+      });
 
+      // 3. Save NGO ID locally and redirect
+      localStorage.setItem('ngoId', ngoDocId);
       alert('✅ NGO Registered successfully!');
-      navigate('/dashboard'); // move here
-      setFormData({ name:'', ngoName:'', email:'', password:'', phone:'', city:'', state:'', year:'' });
+      navigate('/dashboard');
+
+      setFormData({
+        name: '',
+        ngoName: '',
+        email: '',
+        password: '',
+        phone: '',
+        city: '',
+        state: '',
+        year: ''
+      });
     } catch (err) {
-      console.error('Firestore write error:', err);
-      alert('❌ Sorry, Registration failed.');
+      console.error('Registration error:', err);
+      alert('❌ Registration failed: ' + err.message);
     } finally {
       setLoading(false);
     }
@@ -67,10 +82,10 @@ const NGORegister = () => {
   return (
     <div className="register-container">
       <div className="register-overlay"></div>
-      
+
       <form className="register-form" onSubmit={handleSubmit}>
         <h2 className="register-title">Register Your NGO</h2>
-        
+
         <div className="form-grid">
           {[
             { label: 'Your Full Name', name: 'name', type: 'text' },
@@ -95,21 +110,17 @@ const NGORegister = () => {
             </div>
           ))}
         </div>
-        
-        <button 
-          type="submit" 
-          className="register-button"
-          disabled={loading}
-        >
+
+        <button type="submit" className="register-button" disabled={loading}>
           {loading ? 'Registering...' : 'Register'}
         </button>
-        
+
         <p className="login-link">
-          Already have an account? 
-          <Link to="/NGOlogin"> Login here</Link>
+          Already have an account? <Link to="/NGOlogin">Login here</Link>
         </p>
-        <button 
-          type="submit" 
+
+        <button
+          type="button"
           className="back-home"
           disabled={loading}
           onClick={() => navigate('/')}

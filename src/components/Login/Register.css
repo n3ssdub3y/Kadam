@@ -31,7 +31,8 @@
 .register-form {
   background: rgba(255, 255, 255, 0.7);
   padding: 2.5rem;
-  transform: scale(0.8);
+  /* transform: scale(0.8); */
+  zoom: 80%;
   border-radius: 16px;
   width: 800px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
